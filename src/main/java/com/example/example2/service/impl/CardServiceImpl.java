@@ -164,7 +164,7 @@ public class CardServiceImpl implements CardService {
         } else {
             Card foundCard = card.get();
             Optional<Purchase> matchingPurchase = foundCard.getPurchases().stream()
-                    .filter(purchase -> purchase.getPurchaseReference() == cancelTransactionRequestDTO.purchase_reference_number())
+                    .filter(purchase -> purchase.getPurchaseReference() == cancelTransactionRequestDTO.purchase_reference())
                     .findFirst();
 
             if (matchingPurchase.isPresent()) {
@@ -182,7 +182,7 @@ public class CardServiceImpl implements CardService {
         }
         return new CancelTransactionResponseDTO(responseCode.getCode(),
                 responseCode.getCancelTransactionMethodMessage(),
-                cancelTransactionRequestDTO.purchase_reference_number());
+                cancelTransactionRequestDTO.purchase_reference());
     }
 
     private String maskPan(String pan){
