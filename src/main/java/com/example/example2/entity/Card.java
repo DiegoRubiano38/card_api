@@ -2,6 +2,7 @@ package com.example.example2.entity;
 
 import com.example.example2.enums.CardStatus;
 import com.example.example2.enums.CardType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;

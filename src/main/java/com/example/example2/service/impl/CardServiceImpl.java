@@ -10,6 +10,8 @@ import com.example.example2.repository.PurchaseRepository;
 import com.example.example2.service.CardService;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
@@ -117,7 +119,8 @@ public class CardServiceImpl implements CardService {
         Card cardDb = getCardByPan(pan);
         ResponseCode responseCode;
         TransactionStatus transactionStatus;
-        LocalTime timestamp = LocalTime.now();
+        Instant instant = Instant.now();
+        long timestamp = instant.getEpochSecond();
 
         if(null == cardDb) {
 
@@ -157,6 +160,8 @@ public class CardServiceImpl implements CardService {
     public CancelTransactionResponseDTO cancelTransaction(CancelTransactionRequestDTO cancelTransactionRequestDTO) {
 
         ResponseCode responseCode;
+        Instant instant = Instant.now().minus(Duration.ofMinutes(5));
+        Instant transactionInstant;
         Optional<Card> card = Optional.ofNullable(cardRepository.findByPan(cancelTransactionRequestDTO.pan()));
 
         if(card.isEmpty()){
@@ -169,11 +174,19 @@ public class CardServiceImpl implements CardService {
 
             if (matchingPurchase.isPresent()) {
                 Purchase foundPurchase = matchingPurchase.get();
-                if(foundPurchase.getTransactionTimestamp().plusMinutes(5).isBefore(LocalTime.now())){
-                    responseCode = ResponseCode.CERO_ONE;
+                transactionInstant = Instant.ofEpochSecond(foundPurchase.getTransactionTimestamp());
+                if(instant.isAfter(transactionInstant)){
+                    responseCode = ResponseCode.CERO_TWO;
                 } else {
-                    responseCode = ResponseCode.CERO_CERO;
+                    foundCard.getPurchases().forEach(purchase -> {
+                                if(purchase.getId() == foundPurchase.getId()){
+                                    foundCard.getPurchases().remove(purchase);
+                                }
+                            }
+                    );
+                    cardRepository.save(foundCard);
                     purchaseRepository.delete(foundPurchase);
+                    responseCode = ResponseCode.CERO_CERO;
                 }
 
             } else {

@@ -28,7 +28,7 @@ public class Purchase {
     private String purchaseAddress;
 
     @Column(name = "transaction_timestamp")
-    private LocalTime transactionTimestamp;
+    private long transactionTimestamp;
 
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
