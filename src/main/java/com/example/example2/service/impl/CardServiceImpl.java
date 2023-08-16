@@ -165,7 +165,8 @@ public class CardServiceImpl implements CardService {
             responseCode = ResponseCode.CERO_TWO;
         } else {
             Card foundCard = card.get();
-            Optional<Purchase> matchingPurchase = foundCard.getPurchases().stream()
+            Optional<Purchase> matchingPurchase = foundCard.getPurchases()
+                    .stream()
                     .filter(purchase -> purchase.getPurchaseReference() == cancelTransactionRequestDTO.purchase_reference())
                     .findFirst();
 

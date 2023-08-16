@@ -8,8 +8,8 @@ import org.springframework.http.HttpStatus;
 @Data
 public class RequestException extends RuntimeException{
 
-    private String code;
-    private HttpStatus httpStatus;
+    private final String code;
+    private final HttpStatus httpStatus;
     public RequestException(String code, String message, HttpStatus httpStatus) {
         super(message);
         this.code = code;
