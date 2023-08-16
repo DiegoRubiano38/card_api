@@ -49,10 +49,6 @@ public class CardController {
     @PostMapping (value = "/create")
     public ResponseEntity<CreateCardDTO> createCard(@Valid @RequestBody Card card, BindingResult result){
 
-        if(result.hasErrors()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, formatMessage(result));
-        }
-
         CreateCardDTO cardCreated = cardService.createCard(card);
 
         if(cardCreated.responseCode().equals(ResponseCode.CERO_TWO.getCode())){

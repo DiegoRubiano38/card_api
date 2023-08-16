@@ -13,10 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class CardServiceImpl implements CardService {
@@ -105,7 +102,7 @@ public class CardServiceImpl implements CardService {
 
         if(null == cardDb){return null;}
         else if (cardDb.getValidationNumber() != enrollCardRequestDTO.validation_number()) {
-            return new Card();
+            return null;
         }
 
         cardDb.setCardStatus(CardStatus.DELETED);
@@ -178,12 +175,7 @@ public class CardServiceImpl implements CardService {
                 if(instant.isAfter(transactionInstant)){
                     responseCode = ResponseCode.CERO_TWO;
                 } else {
-                    foundCard.getPurchases().forEach(purchase -> {
-                                if(purchase.getId() == foundPurchase.getId()){
-                                    foundCard.getPurchases().remove(purchase);
-                                }
-                            }
-                    );
+                    foundCard.getPurchases().removeIf(purchase -> purchase.getId() == foundPurchase.getId());
                     cardRepository.save(foundCard);
                     purchaseRepository.delete(foundPurchase);
                     responseCode = ResponseCode.CERO_CERO;

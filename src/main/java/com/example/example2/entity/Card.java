@@ -5,10 +5,7 @@ import com.example.example2.enums.CardType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -36,7 +33,8 @@ public class Card {
     private CardStatus cardStatus;
     @Column(name = "validation_number")
     private int validationNumber;
-    @OneToMany(mappedBy = "card")
+    @OneToMany(mappedBy = "card", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
     private List<Purchase> purchases;
 
 }

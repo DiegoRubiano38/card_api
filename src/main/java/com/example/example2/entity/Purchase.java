@@ -2,10 +2,7 @@ package com.example.example2.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalTime;
 
@@ -31,7 +28,8 @@ public class Purchase {
     private long transactionTimestamp;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "card_id", referencedColumnName = "id")
+    @ToString.Exclude
     private Card card;
 }
