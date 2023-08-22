@@ -2,9 +2,8 @@ package com.example.example2.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.*;
-
-import java.time.LocalTime;
 
 @Entity
 @AllArgsConstructor
@@ -20,6 +19,7 @@ public class Purchase {
 
     private int purchaseReference;
 
+    @Min(value = 1, message = "Value must not be empty or greater than 1")
     private int totalAmount;
 
     private String purchaseAddress;

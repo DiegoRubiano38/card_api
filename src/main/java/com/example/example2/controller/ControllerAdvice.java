@@ -9,10 +9,8 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,8 +42,8 @@ public class ControllerAdvice {
     public Map<String, String> constraintExceptionHandler(ConstraintViolationException  ex){
         Map<String, String> errorMap = new HashMap<>();
         ex.getConstraintViolations().forEach(objectError -> {
-            String fieldName = ((FieldError) objectError).getField();
-            String message = ((FieldError) objectError).getDefaultMessage();
+            String fieldName = objectError.getPropertyPath().toString();
+            String message = objectError.getMessage();
 
             errorMap.put(fieldName,message);
         });

@@ -21,7 +21,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.hibernate.validator:hibernate-validator:8.0.1.Final")
-	implementation("com.fasterxml.jackson.core:jackson-databind:2.13.0")
+	implementation("com.fasterxml.jackson.core:jackson-databind:2.13.4.1")
 	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("org.postgresql:postgresql")

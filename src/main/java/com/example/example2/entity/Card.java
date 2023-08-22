@@ -30,7 +30,7 @@ public class Card {
     @NotEmpty(message = "Customer must not be empty")
     private String customer;
 
-    @NotNull(message = "Identification must not be empty")
+    @Min(value = 1, message = "Value must not be empty or be greater than 1")
     private long identification;
 
     @NotNull(message = "Cannot be empty")
