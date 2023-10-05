@@ -3,20 +3,14 @@ package com.example.example2.controller;
 import com.example.example2.dto.*;
 import com.example.example2.entity.Card;
 import com.example.example2.enums.ResponseCode;
-import com.example.example2.exceptions.ErrorMessage;
 import com.example.example2.service.CardService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 /*@Validated*/
@@ -47,7 +41,7 @@ public class CardController {
     }
 
     @PostMapping (value = "/create")
-    public ResponseEntity<CreateCardDTO> createCard(@Valid @RequestBody Card card, BindingResult result){
+    public ResponseEntity<CreateCardDTO> createCard(@Valid @RequestBody Card card){
 
         CreateCardDTO cardCreated = cardService.createCard(card);
 
@@ -118,28 +112,5 @@ public class CardController {
         } else {
             return ResponseEntity.status(HttpStatus.CREATED).body(cancelTransactionResponseDTO);
         }
-    }
-
-    private String formatMessage(BindingResult result){
-        List<Map<String,String>> errors = result.getFieldErrors().stream()
-                .map(err ->{
-                    Map<String,String>  error =  new HashMap<>();
-                    error.put(err.getField(), err.getDefaultMessage());
-                    return error;
-
-                }).toList();
-        ErrorMessage errorMessage = ErrorMessage.builder()
-                .code("01")
-                .messages(errors).build();
-
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonString;
-
-        try {
-            jsonString = mapper.writeValueAsString(errorMessage);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        return jsonString;
     }
 }
