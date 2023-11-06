@@ -1,5 +1,6 @@
-package com.example.example2.user;
+package com.example.example2.entity;
 
+import com.example.example2.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -62,6 +63,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

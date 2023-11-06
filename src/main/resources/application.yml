@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/cards
-    username: postgres
-    password: postgre
+    username: user
+    password: password
 
   jpa:
     show-sql: true

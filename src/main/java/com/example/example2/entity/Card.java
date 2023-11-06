@@ -10,14 +10,11 @@ import java.util.List;
 
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Table(name = "card")
 @Data
 public class Card {
-
-    public Card() {
-        // Empty constructor to deserialize object
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -7,14 +7,13 @@ import com.example.example2.service.CardService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 /*@Validated*/
-@RequestMapping("/cards")
+@RequestMapping("api/v1/cards")
 public class CardController {
     CardService cardService;
     public CardController(CardService cardService) {
@@ -45,7 +44,7 @@ public class CardController {
 
         CreateCardDTO cardCreated = cardService.createCard(card);
 
-        if(cardCreated.responseCode().equals(ResponseCode.CERO_TWO.getCode())){
+        if(cardCreated.response_code().equals(ResponseCode.CERO_TWO.getCode())){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(cardCreated);
         }
 
@@ -57,11 +56,11 @@ public class CardController {
 
         EnrollCardResponseDTO responseDTO = cardService.enrollCard(request.pan(), request.validation_number());
 
-        if(responseDTO.responseCode().equals(ResponseCode.CERO_CERO.getCode())){
+        if(responseDTO.response_code().equals(ResponseCode.CERO_CERO.getCode())){
             return ResponseEntity.ok(responseDTO);
-        } else if(responseDTO.responseCode().equals(ResponseCode.CERO_ONE.getCode())){
+        } else if(responseDTO.response_code().equals(ResponseCode.CERO_ONE.getCode())){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDTO);
-        } else if(responseDTO.responseCode().equals(ResponseCode.CERO_TWO.getCode())){
+        } else if(responseDTO.response_code().equals(ResponseCode.CERO_TWO.getCode())){
             return ResponseEntity.badRequest().body(responseDTO);
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -87,13 +86,13 @@ public class CardController {
     }
 
     @PostMapping(value = "/create_purchase")
-    public ResponseEntity<CreateTransactionResponseDTO> createPurchase(@RequestBody CreateTransactionRequestDTO request){
+    public ResponseEntity<CreateTransactionResponseDTO> createPurchase(@Valid @RequestBody CreateTransactionRequestDTO request){
 
         CreateTransactionResponseDTO createTransactionResponseDTO = cardService.createTransaction(request.pan(), request.purchase_order());
 
-        if(createTransactionResponseDTO.responseCode().equals(ResponseCode.CERO_ONE.getCode())){
+        if(createTransactionResponseDTO.response_code().equals(ResponseCode.CERO_ONE.getCode())){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(createTransactionResponseDTO);
-        } else if(createTransactionResponseDTO.responseCode().equals(ResponseCode.CERO_TWO.getCode())) {
+        } else if(createTransactionResponseDTO.response_code().equals(ResponseCode.CERO_TWO.getCode())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(createTransactionResponseDTO);
         } else {
             return ResponseEntity.status(HttpStatus.CREATED).body(createTransactionResponseDTO);
@@ -105,9 +104,9 @@ public class CardController {
 
         CancelTransactionResponseDTO cancelTransactionResponseDTO = cardService.cancelTransaction(cancelTransactionRequestDTO);
 
-        if(cancelTransactionResponseDTO.responseCode().equals(ResponseCode.CERO_ONE.getCode())){
+        if(cancelTransactionResponseDTO.response_code().equals(ResponseCode.CERO_ONE.getCode())){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(cancelTransactionResponseDTO);
-        } else if(cancelTransactionResponseDTO.responseCode().equals(ResponseCode.CERO_TWO.getCode())) {
+        } else if(cancelTransactionResponseDTO.response_code().equals(ResponseCode.CERO_TWO.getCode())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(cancelTransactionResponseDTO);
         } else {
             return ResponseEntity.status(HttpStatus.CREATED).body(cancelTransactionResponseDTO);

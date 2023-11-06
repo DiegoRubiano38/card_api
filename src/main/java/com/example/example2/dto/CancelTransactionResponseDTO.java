@@ -1,8 +1,8 @@
 package com.example.example2.dto;
 
 public record CancelTransactionResponseDTO(
-        String responseCode,
-        String responseMessage,
-        long purchaseReferenceNumber
+        String response_code,
+        String response_message,
+        long purchase_reference_number
 ){
 }

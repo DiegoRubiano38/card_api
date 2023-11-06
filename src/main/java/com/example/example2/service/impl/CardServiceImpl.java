@@ -43,11 +43,8 @@ public class CardServiceImpl implements CardService {
         card.setCardStatus(CardStatus.CREATED);
         saveCard = cardRepository.save(card);
 
-        if(0 != saveCard.getId()){
-            responseCode = ResponseCode.CERO_CERO;
-        } else {
-            responseCode = ResponseCode.CERO_ONE;
-        }
+        if(0 != saveCard.getId()) responseCode = ResponseCode.CERO_CERO;
+        else responseCode = ResponseCode.CERO_ONE;
 
         return new CreateCardDTO(responseCode.getCode(), responseCode.getCreateMethodMessage(), saveCard.getValidationNumber(), maskPan(saveCard.getPan()));
     }
@@ -172,19 +169,17 @@ public class CardServiceImpl implements CardService {
             if (matchingPurchase.isPresent()) {
                 Purchase foundPurchase = matchingPurchase.get();
                 transactionInstant = Instant.ofEpochSecond(foundPurchase.getTransactionTimestamp());
-                if(instant.isAfter(transactionInstant)){
-                    responseCode = ResponseCode.CERO_TWO;
-                } else {
+                if(instant.isAfter(transactionInstant))responseCode = ResponseCode.CERO_TWO;
+                else {
                     foundCard.getPurchases().removeIf(purchase -> purchase.getId() == foundPurchase.getId());
                     cardRepository.save(foundCard);
                     purchaseRepository.delete(foundPurchase);
                     responseCode = ResponseCode.CERO_CERO;
                 }
 
-            } else {
-                responseCode = ResponseCode.CERO_ONE;
-            }
+            } else responseCode = ResponseCode.CERO_ONE;
         }
+
         return new CancelTransactionResponseDTO(responseCode.getCode(),
                 responseCode.getCancelTransactionMethodMessage(),
                 cancelTransactionRequestDTO.purchase_reference());
