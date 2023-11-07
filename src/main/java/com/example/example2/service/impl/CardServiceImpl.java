@@ -81,8 +81,7 @@ public class CardServiceImpl implements CardService {
     public GetCardDTO getDtoCardByPan(String pan) {
 
         Card card = cardRepository.findByPan(pan);
-
-        if (card == null) {return null;}
+        if (card == null) return null;
 
         return mapToGetCardDTO(card);
     }
@@ -95,14 +94,8 @@ public class CardServiceImpl implements CardService {
     public Card deleteCard(EnrollCardRequestDTO enrollCardRequestDTO) {
 
         Card cardDb = getCardByPan(enrollCardRequestDTO.pan());
-
-        if(null == cardDb){return null;}
-        else if (cardDb.getValidationNumber() != enrollCardRequestDTO.validation_number()) {
-            return null;
-        }
-
+        if(null == cardDb || cardDb.getValidationNumber() != enrollCardRequestDTO.validation_number()) return null;
         cardDb.setCardStatus(CardStatus.DELETED);
-
         return cardRepository.save(cardDb);
     }
 
