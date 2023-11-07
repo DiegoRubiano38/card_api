@@ -36,7 +36,12 @@ public class AuthenticationService {
     }
 
     public AuthResponse register(RegisterRequest request) {
-        User user = User.builder()
+
+        User user;
+
+        if (isUserExist(request.email())) return new AuthResponse("");
+
+        user = User.builder()
                 .firstName(request.first_name())
                 .lastName(request.last_name())
                 .email(request.email())
@@ -47,6 +52,9 @@ public class AuthenticationService {
         userRepository.save(user);
         String jwtToken = jwtService.generateToken(user);
         return new AuthResponse(jwtToken);
+    }
 
+    private boolean isUserExist(String email){
+        return (userRepository.findByEmail(email).isPresent());
     }
 }
